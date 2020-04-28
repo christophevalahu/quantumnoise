@@ -13,10 +13,10 @@ from math import *
 from qutip import *
 import cmath
 from scipy import interpolate, integrate, optimize
+import warnings
 
-
-class Noise(object) :
-    ''' Class for noise sources and their effects on decoherence.
+class Source(object) :
+    ''' Class for a noise source
     
     Parameters
     ----------
@@ -31,12 +31,48 @@ class Noise(object) :
         
     sigma : float
         Standard deviation of the noise PSD
-    
+        
     Methods 
     --------
     show(w_min, w_max)
         Plots the noise spectrum
         
+    '''
+    def __init__(self, noise_func = None, Dx = 1, Dz = 1, sigma = 0) :
+        self.noise_func = noise_func
+        self.Dx = Dx
+        self.Dz = Dz
+        self.sigma = self.__sigma__()
+        return None
+    
+    def __sigma__(self) :
+        return sqrt(2*integrate.quad(lambda w: self.noise_func(w), 0.01, np.inf)[0])
+    
+    def show(self, w_min = 2*pi*0.1, w_max = 2*pi*1e5) : 
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        w_list = np.linspace(log10(w_min/(2*pi)), log10(w_max/(2*pi)), 100)
+        PSD_list = [self.noise_func(2*pi*(10**w)) for w in w_list]
+        w_list = [(10**w) for w in w_list]
+        plt.loglog(w_list, PSD_list)
+        plt.ylim(min(PSD_list)*0.5, max(PSD_list)*1.5)
+        plt.xlim(w_min/(2*pi), w_max/(2*pi))
+        plt.grid()
+        plt.xlabel(r'$\omega/2\pi \ [Hz]$')
+        plt.ylabel(r'$PSD$')
+        plt.show()
+
+class Noise(object) :
+    ''' Class for decoherence due to noise
+    
+    Parameters
+    ----------
+    sources : list of Source
+        A list of noise sources which contribute to decoherence. 
+    
+    Methods 
+    --------        
     fdecay(t, Omw, N)
         Decay function for a free evolving qubit. Omw is the dressed state splitting
         and N is the number of refocussing pi pulses.
@@ -56,78 +92,103 @@ class Noise(object) :
         
     '''
     
-    def __init__(self, noise_func = None, Dx = 1.0, Dz = 1.0):
-        self.noise_func = noise_func
-        self.Dx = Dx
-        self.Dz = Dz
-        self.sigma = self.__sigma__()
-        return None
+    def __init__(self, sources = None):
+        
+        if sources == None :
+            self.sources = []
+        else :
+            if not isinstance(sources, list) or not all([isinstance(s, Source) for s in sources]) :
+                raise TypeError('Input must be a list of Source objects.')
+            else :
+                self.sources=  sources
+        
     
     def __gfilter__(self, w, t, N = 0, tpi = 0 ) :
         return 1/((w * t)**2) * abs(1 + 
             ((-1)**(N+1))*cmath.exp(1j * w * t)+
             2*sum([((-1)**(i+1))*cmath.exp(1j*w*t/(N+1)*(i+1))*cos(w*tpi/2) for i in range(N)]))**2
     
-    def __sigma__(self) :
-        return sqrt(2*integrate.quad(lambda w: self.noise_func(w), 0.01, 10e5)[0])
-    
     def __fz__(self, t, N) :
-        return  exp(- (t**2/4)*(self.Dz**2)*integrate.quad(lambda w: self.noise_func(w)*self.__gfilter__(w, t, N), 0.01, np.inf, maxp1 = 200)[0])
-        
+        return  exp(- (t**2/4)* \
+                    sum([source.Dz**2 *integrate.quad(lambda w: source.noise_func(w)*self.__gfilter__(w, t, N), 
+                                                  0.01, np.inf, maxp1 = 200)[0] for source in self.sources]))
+    def fz(self, t, N) :
+        return  exp(- (t**2/4)* \
+                    sum([source.Dz**2 *integrate.quad(lambda w: source.noise_func(w)*self.__gfilter__(w, t, N), 
+                                                  0.01, np.inf, maxp1 = 200)[0] for source in self.sources]))
     
-    def show(self, w_min = 2*pi*0.1, w_max = 2*pi*1e5) : 
-        
+    def show(self, w_min = 2*pi*0.1, w_max = 2*pi*1e6) : 
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        w_list = np.linspace(log10(w_min/(2*pi)), log10(w_max/(2*pi)), 100)
-        PSD_list = [self.noise_func(2*pi*(10**w)) for w in w_list]
-        w_list = [(10**w) for w in w_list]
-        plt.loglog(w_list, PSD_list)
-        plt.ylim(min(PSD_list)*0.5, max(PSD_list)*1.5)
+        w_log_list = np.linspace(log10(w_min/(2*pi)), log10(w_max/(2*pi)), 200)
+        w_list = [(10**w) for w in w_log_list]
+        ymax = 0
+        ymin = 0
+        
+        total_PSD = np.zeros(200)
+        
+        for source in self.sources:
+            PSD_list = [source.Dx**2 * source.noise_func(2*pi*(10**w)) for w in w_log_list]
+            plt.loglog(w_list, PSD_list)
+            ymax = max([max(PSD_list),ymax])
+            ymin = min([min(PSD_list),ymax])
+            
+            total_PSD = [sum(x) for x in zip(total_PSD, PSD_list)]
+        
+        plt.scatter(w_list, total_PSD, s=5, facecolors='none', edgecolors='k')
+        
+        plt.ylim(ymin*0.5, ymax*1.5)
         plt.xlim(w_min/(2*pi), w_max/(2*pi))
         plt.grid()
         plt.xlabel(r'$\omega/2\pi \ [Hz]$')
-        plt.ylabel(r'$PSD$')
+        plt.ylabel(r'$S_B \  [T^2/Hz]$')
         plt.show()
     
-    def fdecay(self, t, Omw, N) :
+    def fdecay(self, t, Omw, N = 0) :
         
         return self.__fz__(t, N) * exp(- t/(2*self.T1(Omw)))
     
     def fdecayrabi(self, t, OmR, Omw) :
         
-        u = (self.Dz**2)*(self.sigma**2)/OmR
+        u = sum([(source.Dz**2)*(source.sigma**2) for source in self.sources])/OmR
         
         def chi(t) :
             return (1+(u*t)**2)**(-1/4)
         
-        GammaR = 3/4 * 1/self.T1(Omw) + 1/2*(pi*self.noise_func(OmR)*self.Dz)
+        GammaR = 3/4 * 1/self.T1(Omw) + sum([1/2*(pi*source.noise_func(OmR)*source.Dz) for source in self.sources])
         
         return chi(t) * exp(-t*GammaR)
     
     def Tphi(self, Omw, N = 0) :
-        Tphi_0 = 0.2
+        Tphi_0_list = np.flip(np.linspace(-6, 0, 7))
         def __minfun__(t) :
             return [abs(exp(-1) - self.__fz__(t_i, N)) for t_i in t]
-        
         bnds = [[0, None]]
-        res = optimize.minimize(__minfun__, Tphi_0, method='SLSQP', tol=1e-6, bounds = bnds)
-        return res.x[0]
-    
+        for Tphi_0 in Tphi_0_list :
+            res = optimize.minimize(__minfun__, 10**Tphi_0, method='SLSQP', tol=1e-6, bounds = bnds)
+            if res.fun <= 1e-3 :
+                return res.x[0]
+        warnings.warn('A solution was not found : Scipy.optimize.minimize did not converge.')
+        return 0
+        
     def T2(self, Omw, N = 0) :
-        T2_0 = 0.2
+        T2_0_list = np.flip(np.linspace(-6, 0, 7))
         def __minfun__(t) :
             return [abs(exp(-1) - self.fdecay(t_i, Omw, N)) for t_i in t]
-        
         bnds = [[0, None]]
-        res = optimize.minimize(__minfun__, T2_0, method='SLSQP', tol=1e-6, bounds = bnds)
-        return res.x[0]
+        for T2_0 in T2_0_list :
+            res = optimize.minimize(__minfun__, 10**T2_0, method='SLSQP', tol=1e-6, bounds = bnds)
+            if res.fun <= 1e-3 :
+                return res.x[0]
+        warnings.warn('A solution was not found : Scipy.optimize.minimize did not converge.')
+        return 0
     
     def T1(self, Omw) :
         MU_B =  9.274009994e-24
         HBAR = 1.0545718e-34
       
-        return 1/(2*pi)*(HBAR/MU_B)**2 /(self.Dx**2 * self.noise_func(Omw))
+        return 1/(2*pi)*(HBAR/MU_B)**2 /sum([source.Dx**2 * source.noise_func(Omw) for source in self.sources])
        
 
         
@@ -198,7 +259,7 @@ def voltage_Dz(dzB, v, d, eta, Omw = 0, sensitive = False) :
     # noise. We can therefore use dw/dV = dw/dB * dB/dV = dw/dB * Dx
     return dwdB * Dx
 
-def noise_macro(w) :
+def v_noise_macro(w) :
     ''' Example PSD for voltage noise on the mascroscopic experiment. 
 
     Methods
