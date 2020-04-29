@@ -16,9 +16,6 @@ sys.path.insert(0, os.path.abspath('../../src/'))
 sys.path.insert(0, os.path.abspath('/src/'))
 
 
-autodoc_mock_imports = ["qutip"]
-
-
 # -- Project information -----------------------------------------------------
 
 project = 'QuantumNoise'

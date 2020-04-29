@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 from math import *
-from qutip import *
 import cmath
 from scipy import interpolate, integrate, optimize
 import warnings
