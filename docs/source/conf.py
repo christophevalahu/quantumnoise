@@ -15,6 +15,13 @@ import sys
 sys.path.insert(0, os.path.abspath('../../src/'))
 sys.path.insert(0, os.path.abspath('/src/'))
 
+# -- MOCK MODULES ------------
+import mock
+
+MOCK_MODULE = ['Cython']
+for mod_name in MOCK_MODULE :
+    sys.modules[mod_name] = mock.Mock()
+
 
 # -- Project information -----------------------------------------------------
 
