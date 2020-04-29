@@ -1,0 +1,9 @@
+channels:
+-conda-forge
+
+dependencies:
+- cython
+- matplotlib
+- numpy
+- pip:
+    - qutip
