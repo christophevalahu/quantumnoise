@@ -1,0 +1,14 @@
+channels:
+- conda-forge
+- bioconda
+- r
+- jkroes
+dependencies:
+- cython
+- python=3.6
+- matplotlib
+- numpy
+- scipy
+- sphinx-autorun=1.1.0=py36h5809654_0
+- pip :
+    - qutip
