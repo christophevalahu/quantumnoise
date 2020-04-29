@@ -160,28 +160,32 @@ class Noise(object) :
         return chi(t) * exp(-t*GammaR)
     
     def Tphi(self, Omw, N = 0) :
-        Tphi_0_list = np.flip(np.linspace(-6, 0, 7))
-        def __minfun__(t) :
-            return [abs(exp(-1) - self.__fz__(t_i, N)) for t_i in t]
-        bnds = [[0, None]]
-        for Tphi_0 in Tphi_0_list :
-            res = optimize.minimize(__minfun__, 10**Tphi_0, method='SLSQP', tol=1e-6, bounds = bnds)
-            if res.fun <= 1e-3 :
-                return res.x[0]
-        warnings.warn('A solution was not found : Scipy.optimize.minimize did not converge.')
-        return 0
+    
+         def __minfun__(t) :
+            return abs(exp(-1) - self.__fz__(10**t, N))
+        
+        bnds = [[-6, 2]]
+        Tphi_0 = -3
+        res = optimize.minimize(__minfun__, Tphi_0, method='Nelder-Mead', tol=1e-10, bounds = bnds)
+        
+        if abs(res.fun) >= 1e-6 :
+            warnings.warn('A solution was not found : Scipy.optimize.minimize did not converge.')
+            
+        return 10**res.x[0]
         
     def T2(self, Omw, N = 0) :
-        T2_0_list = np.flip(np.linspace(-6, 0, 7))
+        
         def __minfun__(t) :
-            return [abs(exp(-1) - self.fdecay(t_i, Omw, N)) for t_i in t]
-        bnds = [[0, None]]
-        for T2_0 in T2_0_list :
-            res = optimize.minimize(__minfun__, 10**T2_0, method='SLSQP', tol=1e-6, bounds = bnds)
-            if res.fun <= 1e-3 :
-                return res.x[0]
-        warnings.warn('A solution was not found : Scipy.optimize.minimize did not converge.')
-        return 0
+            return abs(exp(-1) - self.fdecay(10**t, Omw, N)) 
+        
+        bnds = [[-6, 2]]
+        T2_0 = -3
+        res = optimize.minimize(__minfun__, T2_0, method='Nelder-Mead', tol=1e-10, bounds = bnds)
+        
+        if abs(res.fun) >= 1e-6 :
+            warnings.warn('A solution was not found : Scipy.optimize.minimize did not converge.')
+        
+        return 10**res.x[0]
     
     def T1(self, Omw) :
         MU_B =  9.274009994e-24
