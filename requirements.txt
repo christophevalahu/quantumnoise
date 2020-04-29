@@ -2,3 +2,4 @@ matplotlib
 numpy
 qutip
 scipy
+cython
