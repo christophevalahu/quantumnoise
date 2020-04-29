@@ -22,7 +22,7 @@ MOCK_MODULE = ['Cython']
 for mod_name in MOCK_MODULE :
     sys.modules[mod_name] = mock.Mock()
 
-autodoc_mock_imports = ["Cython"]
+autodoc_mock_imports = ["qutip"]
 
 
 # -- Project information -----------------------------------------------------
