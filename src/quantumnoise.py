@@ -161,7 +161,7 @@ class Noise(object) :
     
     def Tphi(self, Omw, N = 0) :
     
-         def __minfun__(t) :
+        def __minfun__(t) :
             return abs(exp(-1) - self.__fz__(10**t, N))
         
         bnds = [[-6, 2]]
