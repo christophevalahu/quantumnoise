@@ -31,9 +31,22 @@ release = '1.0.0'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.coverage', 'sphinx.ext.napoleon',
-"sphinx_rtd_theme", 'sphinx.ext.mathjax', 'rst2pdf.pdfbuilder'
-]
+
+if on_rtd:
+    extensions = [
+        'sphinx.ext.autodoc',
+        'sphinx.ext.mathjax',
+        'sphinx.ext.intersphinx'
+    ]
+else :
+    extensions = [
+        'sphinx.ext.autodoc', 
+        'sphinx.ext.coverage', 
+        'sphinx.ext.napoleon',
+        'sphinx_rtd_theme', 
+        'sphinx.ext.mathjax', 
+        'rst2pdf.pdfbuilder'
+    ]
 
 
 math_number_all = True
