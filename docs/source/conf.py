@@ -32,22 +32,14 @@ release = '1.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
-if on_rtd:
-    extensions = [
-        'sphinx.ext.autodoc',
-        'sphinx.ext.mathjax',
-        'sphinx.ext.intersphinx'
-    ]
-else :
-    extensions = [
-        'sphinx.ext.autodoc', 
-        'sphinx.ext.coverage', 
-        'sphinx.ext.napoleon',
-        'sphinx_rtd_theme', 
-        'sphinx.ext.mathjax', 
-        'rst2pdf.pdfbuilder'
-    ]
-
+extensions = [
+    'sphinx.ext.autodoc', 
+    'sphinx.ext.coverage', 
+    'sphinx.ext.napoleon',
+    'sphinx_rtd_theme', 
+    'sphinx.ext.mathjax'
+]
+#'rst2pdf.pdfbuilder'
 
 math_number_all = True
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
