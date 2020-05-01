@@ -41,7 +41,13 @@ class Source(object) :
         self.noise_func = noise_func
         self.Dx = Dx
         self.Dz = Dz
-        self.sigma = self.__sigma__()
+        
+        try :
+            self.sigma = self.__sigma__()
+        except :
+            self.sigma = np.inf
+            warnings.warn('Warning : Integral of spectrum diverges!')
+            
         return None
     
     def __sigma__(self) :
@@ -62,6 +68,8 @@ class Source(object) :
         plt.ylabel(r'$PSD$')
         plt.show()
 
+        
+        
 class Noise(object) :
     ''' Class for decoherence due to noise
     
@@ -108,14 +116,10 @@ class Noise(object) :
             2*sum([((-1)**(i+1))*cmath.exp(1j*w*t/(N+1)*(i+1))*cos(w*tpi/2) for i in range(N)]))**2
     
     def __fz__(self, t, N) :
-        return  exp(- (t**2/4)* \
+        return  exp(- (t**2)* \
                     sum([source.Dz**2 *integrate.quad(lambda w: source.noise_func(w)*self.__gfilter__(w, t, N), 
                                                   0.01, np.inf, maxp1 = 200)[0] for source in self.sources]))
-    def fz(self, t, N) :
-        return  exp(- (t**2/4)* \
-                    sum([source.Dz**2 *integrate.quad(lambda w: source.noise_func(w)*self.__gfilter__(w, t, N), 
-                                                  0.01, np.inf, maxp1 = 200)[0] for source in self.sources]))
-    
+
     def show(self, w_min = 2*pi*0.1, w_max = 2*pi*1e6) : 
 
         fig = plt.figure()
@@ -190,8 +194,13 @@ class Noise(object) :
     def T1(self, Omw) :
         MU_B =  9.274009994e-24
         HBAR = 1.0545718e-34
-      
-        return 1/(2*pi)*(HBAR/MU_B)**2 /sum([source.Dx**2 * source.noise_func(Omw) for source in self.sources])
+
+        sb_tot = sum([source.Dx**2 * source.noise_func(Omw) for source in self.sources])
+        
+        if sb_tot == 0 :
+            return np.inf
+        else :
+            return 1/(2*pi)*(HBAR/MU_B)**2 /sb_tot
        
 
         
@@ -220,23 +229,28 @@ def voltage_Dx(dzB, v, d, eta, Omw = 0) :
     q = 1.60217662e-19;
     return q*dzB*eta/(m*(v**2 - Omw**2)*d)
 
-def voltage_Dz(dzB, v, d, eta, Omw = 0, sensitive = False) :
-    ''' Sigmax coupling of voltage noise
+def voltage_Dz(dzB, v, d, eta, Omw = 0, state = "dressed") :
+    ''' Sigmaz coupling of voltage noise
     
     Parameters
     ----------
-    dzB : Magnetic field gradient
+    dzB : float
+        Magnetic field gradient
     
-    v : secular frequency
+    v : float
+        secular frequency
     
-    d : distance to electrodes
+    d : float
+        distance to electrodes
     
-    eta : geometric factor
+    eta : float 
+        geometric factor
     
-    Omw : dressed state splitting
+    Omw : float 
+        dressed state splitting
     
-    Sensitive : True if using magnetic sensitive states
-    
+    state : string, ["dressed", "clock", "bare"]
+        the qubit's state
     
     Notes
     ---------
@@ -253,11 +267,15 @@ def voltage_Dz(dzB, v, d, eta, Omw = 0, sensitive = False) :
     Dx = voltage_Dx(dzB, v, d, eta, Omw)
     
     # dwdB is the change in frequency per change in magnetic field
-    if not sensitive :
+    if state is "dressed" :
+        dwdB = B/W_HF*((G_J*MU_B/HBAR)**2)/sqrt(1+(B*G_J*MU_B/(W_HF*HBAR))**2)/sqrt(2)
+    elif state is "clock" :
         dwdB = B/W_HF*((G_J*MU_B/HBAR)**2)/sqrt(1+(B*G_J*MU_B/(W_HF*HBAR))**2)
-    else:
+    elif state is "bare":
         dwdB = 1/2*W_HF*(G_J * MU_B/(W_HF*HBAR) - B*G_J**2 * MU_B**2/((W_HF*HBAR)**2*sqrt(1+(B*G_J*MU_B/W_HF/HBAR)**2)))
-
+    else :
+        warnings.warn('State was not recognized!')
+        
     # Dx can be written as dB/dV, ie change in magnetic field per change in voltage
     # noise. We can therefore use dw/dV = dw/dB * dB/dV = dw/dB * Dx
     return dwdB * Dx
@@ -284,7 +302,7 @@ def v_noise_macro(w) :
         return 200*((G_0*(1+(6.28*w/W_C)**(2*N))**(-1.5))**2) + 4*K_B*300*0.4
     
     def Ss(w) :
-        EN_FLICKER = (3e-6)**2
+        EN_FLICKER = (2.5e-6)**2
         EN_WHITE = (3.3e-9)**2
         if w < 0.1 :
             return EN_FLICKER*2*pi/0.1 + EN_WHITE

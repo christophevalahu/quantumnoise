@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Physics of Decoherence &mdash; QuantumNoise 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to QuantumNoise’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QuantumNoise
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Physics of Decoherence</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#depolarization">Depolarization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dephasing">Dephasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#decoherence">Decoherence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#driven-evolution">Driven evolution</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QuantumNoise</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Physics of Decoherence</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="physics-of-decoherence">
+<h1>Physics of Decoherence<a class="headerlink" href="#physics-of-decoherence" title="Permalink to this headline">¶</a></h1>
+<p>There are two sources of decoherence: depolarization and dephasing.
+They each have an associated decay time: lifetime and dephasing time. Together, both decays
+cause decoherence.</p>
+<div class="section" id="depolarization">
+<h2>Depolarization<a class="headerlink" href="#depolarization" title="Permalink to this headline">¶</a></h2>
+<p>The depolarization rate (inverse of the lifetime) is defined as :</p>
+<div class="math notranslate nohighlight" id="equation-guide-0">
+<span class="eqno">(1)<a class="headerlink" href="#equation-guide-0" title="Permalink to this equation">¶</a></span>\[\Gamma_1 = \frac{2 \pi \mu_B^2}{\hbar^2} S_B(\omega)\]</div>
+<p>where ‘$S_B(omega)$’ is the Power Spectral Density of magnetic field noise. :math:’omega’ corresponds to the frequency splitting
+of the qubit. For dressed states we consider leakage to spectator state, which is analogous to depolarization, and so :math:’omega = frac{Omega_{mu w}}{sqrt{2}}’.</p>
+</div>
+<div class="section" id="dephasing">
+<h2>Dephasing<a class="headerlink" href="#dephasing" title="Permalink to this headline">¶</a></h2>
+<p>The effects of dephasing strongly depend on the shape of the PSD. In the simplest case, if the PSD is constant accross the spectrum, we find that :</p>
+<div class="math notranslate nohighlight" id="equation-guide-1">
+<span class="eqno">(2)<a class="headerlink" href="#equation-guide-1" title="Permalink to this equation">¶</a></span>\[\Gamma_\phi = \pi S_{\delta\omega_z}(\omega = 0)
+:label: eq:Gammaphi\]</div>
+<p>For an arbitrary noise spectrum, it is more difficult to derive an analytic expression for the dephasing rate. One can instead derive decay functions, which describe
+the decay of fidelity over time. The decay function of dephasing is :</p>
+<div class="math notranslate nohighlight" id="equation-guide-2">
+<span class="eqno">(3)<a class="headerlink" href="#equation-guide-2" title="Permalink to this equation">¶</a></span>\[f_{\phi}(t) = exp(-\frac{t^2}{2}\int^{+\inf}_{-\inf} S_{\delta\omega_z}g_N(\omega, t) d\omega)
+:label: eq:fphi\]</div>
+<p>where :math:’g_N(t)’ is a filter function. During the evolution of a qubit, one can apply N refocussing pulses,
+which decouple the qubit from low frequency noise. For N&gt;0, the filter function acts as a band pass filter who’s
+center frequency increases with N. Therefore, for a 1/f spectrum, it is advantageous to increase the number of
+refocussing pulses. The filter function :math:’g_N(t)’ is defined as :</p>
+<div class="math notranslate nohighlight" id="equation-guide-3">
+<span class="eqno">(4)<a class="headerlink" href="#equation-guide-3" title="Permalink to this equation">¶</a></span>\[g_N(\omega, t) = \frac{1}{(\omega t)^2}|1 + (-1)^N e^{i \omega t} + 2 \sum^N_{j=1}(-1)^j e^{i\omega j \frac{t}{N+1}}cos(\omega T_\pi/2)|^2
+:label: eq:gN\]</div>
+<p>where Tpi is the time of a single refocussing pulse.</p>
+<p>In order to obtain a characteristic dephasing time, one can solve the following equation:</p>
+<div class="math notranslate nohighlight" id="equation-guide-4">
+<span class="eqno">(5)<a class="headerlink" href="#equation-guide-4" title="Permalink to this equation">¶</a></span>\[t^2 = 2 \int^{+\inf}_{-\inf} S_{\delta\omega_z}g_N(\omega, t) d\omega\]</div>
+</div>
+<div class="section" id="decoherence">
+<h2>Decoherence<a class="headerlink" href="#decoherence" title="Permalink to this headline">¶</a></h2>
+<p>Decoherence is the simultaneous effects of depolarization and dephasing. For a constant PSD, the decoherence rate is defined as:</p>
+<div class="math notranslate nohighlight" id="equation-guide-5">
+<span class="eqno">(6)<a class="headerlink" href="#equation-guide-5" title="Permalink to this equation">¶</a></span>\[\Gamma_2 = \frac{1}{2}\Gamma_1 + \Gamma_\phi
+:label: eq:Gamma2\]</div>
+<p>However, as is the case for dephasing, most PSD contain colored noise. In such a case, the decay due to decoherence is a linear
+combination of dephasing and depolarization decays. The decay function is :</p>
+<div class="math notranslate nohighlight" id="equation-eq-f2">
+<span class="eqno">(7)<a class="headerlink" href="#equation-eq-f2" title="Permalink to this equation">¶</a></span>\[f_2(t) = f_\phi(t)exp(-\Gamma_1 t/2) = exp(-\frac{t^2}{2}\int^{+\inf}_{-\inf} S_{\delta\omega_z}g_N(\omega, t) d\omega - \Gamma_1 \frac{t}{2})\]</div>
+<p>Once again, the decay is not purely exponential, it is therefore difficult to obtain a analaytical expression for the decoherence time. However,
+a characteristic decoherence time can be extracted by solving :math:’f_2(t) = e^{-1}’</p>
+</div>
+<div class="section" id="driven-evolution">
+<h2>Driven evolution<a class="headerlink" href="#driven-evolution" title="Permalink to this headline">¶</a></h2>
+<p>A final scenario arises when a weak field is resonant with the qubit transition frequency. This would be the case of a
+single qubit gate, which rotates with a frequency equal to the Rabi frequency :math:’Omega_R’. There exists a first
+decay due to quasi-static noise, which is given by :</p>
+<div class="math notranslate nohighlight" id="equation-guide-6">
+<span class="eqno">(8)<a class="headerlink" href="#equation-guide-6" title="Permalink to this equation">¶</a></span>\[ \begin{align}\begin{aligned}\chi(t) = (1 + (\sigma_{\delta\omega_z}t)^2)^{-1/4},\\\sigma_{\delta\omega_z}^2 = \int^{+\inf}_{-\inf} S_{\delta\omega_z}d\omega
+:label: eq:chi\end{aligned}\end{align} \]</div>
+<p>A second decay arises from noise resonant with the Rabi frequency. This decay is given by :</p>
+<div class="math notranslate nohighlight" id="equation-guide-7">
+<span class="eqno">(9)<a class="headerlink" href="#equation-guide-7" title="Permalink to this equation">¶</a></span>\[\Gamma_R = \frac{3}{4}\Gamma_1 + \frac{1}{2}\Gamma_\nu,
+:label: eq:GammaR\]</div>
+<p>The final decay function can therefore be found to be :</p>
+<div class="math notranslate nohighlight" id="equation-guide-8">
+<span class="eqno">(10)<a class="headerlink" href="#equation-guide-8" title="Permalink to this equation">¶</a></span>\[f_R(t) = \chi(t) e^{-\Gamma_R t}
+:label: eq:fR\]</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to QuantumNoise’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Christophe Valahu
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
