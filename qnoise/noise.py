@@ -9,7 +9,7 @@
 import matplotlib.pyplot as plt
 import time
 import numpy as np
-from math import *
+from math import sqrt, pi, cos
 import cmath
 from scipy import interpolate, integrate, optimize
 import warnings
@@ -57,7 +57,7 @@ class Source(object) :
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        w_list = np.linspace(log10(w_min/(2*pi)), log10(w_max/(2*pi)), 100)
+        w_list = np.linspace(np.log10(w_min/(2*pi)), np.log10(w_max/(2*pi)), 100)
         PSD_list = [self.noise_func(2*pi*(10**w)) for w in w_list]
         w_list = [(10**w) for w in w_list]
         plt.loglog(w_list, PSD_list)
@@ -116,7 +116,7 @@ class Noise(object) :
             2*sum([((-1)**(i+1))*cmath.exp(1j*w*t/(N+1)*(i+1))*cos(w*tpi/2) for i in range(N)]))**2
     
     def __fz__(self, t, N) :
-        return  exp(- (t**2)* \
+        return  np.exp(- (t**2)* \
                     sum([source.Dz**2 *integrate.quad(lambda w: source.noise_func(w)*self.__gfilter__(w, t, N), 
                                                   0.01, np.inf, maxp1 = 200)[0] for source in self.sources]))
 
@@ -124,7 +124,7 @@ class Noise(object) :
 
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        w_log_list = np.linspace(log10(w_min/(2*pi)), log10(w_max/(2*pi)), 200)
+        w_log_list = np.linspace(np.log10(w_min/(2*pi)), np.log10(w_max/(2*pi)), 200)
         w_list = [(10**w) for w in w_log_list]
         ymax = 0
         ymin = 0
@@ -150,23 +150,28 @@ class Noise(object) :
     
     def fdecay(self, t, Omw, N = 0) :
         
-        return self.__fz__(t, N) * exp(- t/(2*self.T1(Omw)))
+        return self.__fz__(t, N) * np.exp(- t/(2*self.T1(Omw)))
     
     def fdecayrabi(self, t, OmR, Omw) :
         
-        u = sum([(source.Dz**2)*(source.sigma**2) for source in self.sources])/OmR
+        def _spectrum_dz(w) :
+            return sum([source.Dz**2 * source.noise_func(w) for source in self.sources])
         
-        def chi(t) :
-            return (1+(u*t)**2)**(-1/4)
+        sigma_total = sqrt(2*integrate.quad(_spectrum_dz, 0.01, np.inf)[0])
+       
+        def _chi(t) :
+            return (1+((sigma_total**2)/OmR*t)**2)**(-1/4)
         
-        GammaR = 3/4 * 1/self.T1(Omw) + sum([1/2*(pi*source.noise_func(OmR)*source.Dz) for source in self.sources])
+        Gammav = _spectrum_dz(OmR)/2
         
-        return chi(t) * exp(-t*GammaR)
+        GammaR = 3/4 /self.T1(Omw) + 1/2 * Gammav
+        
+        return _chi(t) * np.exp(-t*GammaR)
     
     def Tphi(self, Omw, N = 0) :
     
         def __minfun__(t) :
-            return abs(exp(-1) - self.__fz__(10**t, N))
+            return abs(np.exp(-1) - self.__fz__(10**t, N))
         
         bnds = [[-6, 2]]
         Tphi_0 = -3
@@ -180,7 +185,7 @@ class Noise(object) :
     def T2(self, Omw, N = 0) :
         
         def __minfun__(t) :
-            return abs(exp(-1) - self.fdecay(10**t, Omw, N)) 
+            return abs(np.exp(-1) - self.fdecay(10**t, Omw, N)) 
         
         bnds = [[-6, 2]]
         T2_0 = -3
@@ -204,124 +209,3 @@ class Noise(object) :
        
 
         
-def voltage_Dx(dzB, v, d, eta, Omw = 0) :
-    ''' Sigmax coupling of voltage noise
-    
-    Parameters
-    ----------
-    dzB : Magnetic field gradient
-    
-    v : secular frequency
-    
-    d : distance to electrodes
-    
-    eta : geometric factor
-    
-    Omw : dressed state splitting
-    
-    
-    Notes
-    ---------
-    Omw can be neglected when v >> Omw, which is usually the case
-    
-    '''
-    m =  171*1.6726219e-27;
-    q = 1.60217662e-19;
-    return q*dzB*eta/(m*(v**2 - Omw**2)*d)
-
-def voltage_Dz(dzB, v, d, eta, Omw = 0, state = "dressed") :
-    ''' Sigmaz coupling of voltage noise
-    
-    Parameters
-    ----------
-    dzB : float
-        Magnetic field gradient
-    
-    v : float
-        secular frequency
-    
-    d : float
-        distance to electrodes
-    
-    eta : float 
-        geometric factor
-    
-    Omw : float 
-        dressed state splitting
-    
-    state : string, ["dressed", "clock", "bare"]
-        the qubit's state
-    
-    Notes
-    ---------
-    Omw can be neglected when v >> Omw, which is usually the case
-    
-    '''
-    
-    MU_B =  9.274009994e-24
-    HBAR = 1.0545718e-34
-    G_J = 2
-    W_HF = 2*pi*12.642812118500e9
-    B = 10e-4
-        
-    Dx = voltage_Dx(dzB, v, d, eta, Omw)
-    
-    # dwdB is the change in frequency per change in magnetic field
-    if state is "dressed" :
-        dwdB = B/W_HF*((G_J*MU_B/HBAR)**2)/sqrt(1+(B*G_J*MU_B/(W_HF*HBAR))**2)/sqrt(2)
-    elif state is "clock" :
-        dwdB = B/W_HF*((G_J*MU_B/HBAR)**2)/sqrt(1+(B*G_J*MU_B/(W_HF*HBAR))**2)
-    elif state is "bare":
-        dwdB = 1/2*W_HF*(G_J * MU_B/(W_HF*HBAR) - B*G_J**2 * MU_B**2/((W_HF*HBAR)**2*sqrt(1+(B*G_J*MU_B/W_HF/HBAR)**2)))
-    else :
-        warnings.warn('State was not recognized!')
-        
-    # Dx can be written as dB/dV, ie change in magnetic field per change in voltage
-    # noise. We can therefore use dw/dV = dw/dB * dB/dV = dw/dB * Dx
-    return dwdB * Dx
-
-def v_noise_macro(w) :
-    ''' Example PSD for voltage noise on the mascroscopic experiment. 
-
-    Methods
-    ------
-    Sj : Thermal noise
-
-    Ss : Noise out of the Voltage Generator (HV-40-16)
-
-    Filter : Low pass butterworth filter
-
-    Gauss : Noise source which was identified at 20 kHz, modeled by a gaussian
-    
-    '''
-    def Sj(w) :
-        G_0 = 8.19e-9
-        W_C = 2*pi*6.5e3
-        N = .34
-        K_B = 1.38064852e-23
-        return 200*((G_0*(1+(6.28*w/W_C)**(2*N))**(-1.5))**2) + 4*K_B*300*0.4
-    
-    def Ss(w) :
-        EN_FLICKER = (2.5e-6)**2
-        EN_WHITE = (3.3e-9)**2
-        if w < 0.1 :
-            return EN_FLICKER*2*pi/0.1 + EN_WHITE
-        else :
-            return EN_FLICKER * 2 * pi/w + EN_WHITE
-        
-    def Filter(w, wc, n) :
-        return 1 / (1 + (w/wc)**(2*n))
-    
-    def Gauss(w, w0, sigma, A) :
-        return (A * exp(-(w - w0)**2/(2*sigma**2)))**2
-        
-    # Filter parameters
-    FILTER_WC = 2*pi*30.5
-    FILTER_ORDER = 2
-    
-    # Gaussian noise source parameters
-    GAUSS_W0 = 2*pi*20e3
-    GAUSS_A = 7e-9
-    GAUSS_SIGMA = 2*pi*4e3
-    
-    return abs(Ss(w)*Filter(w, FILTER_WC, FILTER_ORDER) + Sj(w) + Gauss(w, GAUSS_W0, GAUSS_SIGMA, GAUSS_A))

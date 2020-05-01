@@ -12,8 +12,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../src/'))
-sys.path.insert(0, os.path.abspath('/src/'))
+sys.path.insert(0, os.path.abspath('../../qnoise/'))
+sys.path.insert(0, os.path.abspath('/qnoise/'))
 
 
 # -- Project information -----------------------------------------------------
@@ -34,12 +34,18 @@ release = '1.0.0'
 
 extensions = [
     'sphinx.ext.autodoc', 
+    'autodocsumm',
     'sphinx.ext.coverage', 
     'sphinx.ext.napoleon',
     'sphinx_rtd_theme', 
     'sphinx.ext.mathjax'
 ]
 #'rst2pdf.pdfbuilder'
+autodoc_default_options = {
+    'autosummary' : True,
+}
+
+
 
 math_number_all = True
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"

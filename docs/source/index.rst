@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Quantum Noise Documentation
+QNoise Documentation
 ========================================
 
 .. toctree::
@@ -14,7 +14,14 @@ Quantum Noise Documentation
 	guide
 	code
 
-.. automodule:: quantumnoise
+Code 
+==================================
+	
+.. automodule:: noise
+	:members:
+.. automodule:: coupling
+	:members:
+.. automodule:: spectrum
 	:members:
 
 Indices and tables

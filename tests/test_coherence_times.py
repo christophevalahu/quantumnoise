@@ -1,6 +1,6 @@
 import sys, os
-sys.path.insert(0, os.path.abspath('../src/'))
-import quantumnoise as qn
+sys.path.insert(0, os.path.abspath('../qnoise/'))
+from qnoise import quantumnoise as qn
 import pytest
 import numpy as np
 

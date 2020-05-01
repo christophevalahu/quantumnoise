@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quantum Noise Documentation &mdash; QuantumNoise 1.0.0 documentation</title>
+  <title>QNoise Documentation &mdash; QuantumNoise 1.0.0 documentation</title>
   
 
   
@@ -130,7 +130,7 @@
     
       <li><a href="#">Docs</a> &raquo;</li>
         
-      <li>Quantum Noise Documentation</li>
+      <li>QNoise Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -149,8 +149,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="quantum-noise-documentation">
-<h1>Quantum Noise Documentation<a class="headerlink" href="#quantum-noise-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="qnoise-documentation">
+<h1>QNoise Documentation<a class="headerlink" href="#qnoise-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -165,9 +165,24 @@
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code documentation</a></li>
 </ul>
 </div>
-<span class="target" id="module-quantumnoise"></span><dl class="py class">
-<dt id="quantumnoise.Noise">
-<em class="property">class </em><code class="sig-prename descclassname">quantumnoise.</code><code class="sig-name descname">Noise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sources</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Noise" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-noise"></span><p><strong>Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#noise.Noise" title="noise.Noise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Noise</span></code></a>([sources])</p></td>
+<td><p>Class for decoherence due to noise</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#noise.Source" title="noise.Source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Source</span></code></a>([noise_func, Dx, Dz, sigma])</p></td>
+<td><p>Class for a noise source</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="noise.Noise">
+<em class="property">class </em><code class="sig-prename descclassname">noise.</code><code class="sig-name descname">Noise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sources</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Noise" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for decoherence due to noise</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -175,42 +190,42 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt id="quantumnoise.Noise.fdecay">
-<code class="sig-name descname">fdecay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">Omw</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Noise.fdecay" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Noise.fdecay">
+<code class="sig-name descname">fdecay</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">Omw</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Noise.fdecay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decay function for a free evolving qubit. Omw is the dressed state splitting
 and N is the number of refocussing pi pulses.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="quantumnoise.Noise.fdecayrabi">
-<code class="sig-name descname">fdecayrabi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">OmR</span></em>, <em class="sig-param"><span class="n">OmW</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Noise.fdecayrabi" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Noise.fdecayrabi">
+<code class="sig-name descname">fdecayrabi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">OmR</span></em>, <em class="sig-param"><span class="n">OmW</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Noise.fdecayrabi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decay function for a driven evolution. OmR is the rabi frequency,
 Omw is the dressed state splitting.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="quantumnoise.Noise.Tphi">
-<code class="sig-name descname">Tphi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Omw</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Noise.Tphi" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Noise.Tphi">
+<code class="sig-name descname">Tphi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Omw</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Noise.Tphi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dephasing time</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="quantumnoise.Noise.T2">
-<code class="sig-name descname">T2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Omw</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Noise.T2" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Noise.T2">
+<code class="sig-name descname">T2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Omw</span></em>, <em class="sig-param"><span class="n">N</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Noise.T2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Coherence time</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="quantumnoise.Noise.T1">
-<code class="sig-name descname">T1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Omw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Noise.T1" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Noise.T1">
+<code class="sig-name descname">T1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Omw</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Noise.T1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lifetime</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="quantumnoise.Source">
-<em class="property">class </em><code class="sig-prename descclassname">quantumnoise.</code><code class="sig-name descname">Source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">noise_func</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Dx</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">Dz</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Source" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Source">
+<em class="property">class </em><code class="sig-prename descclassname">noise.</code><code class="sig-name descname">Source</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">noise_func</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Dx</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">Dz</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for a noise source</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -223,76 +238,140 @@ Omw is the dressed state splitting.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="quantumnoise.Source.show">
-<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w_min</span></em>, <em class="sig-param"><span class="n">w_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.Source.show" title="Permalink to this definition">¶</a></dt>
+<dt id="noise.Source.show">
+<code class="sig-name descname">show</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w_min</span></em>, <em class="sig-param"><span class="n">w_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#noise.Source.show" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots the noise spectrum</p>
 </dd></dl>
 
 </dd></dl>
 
+<span class="target" id="module-coupling"></span><p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coupling.current_Dx" title="coupling.current_Dx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_Dx</span></code></a>(dx, z0)</p></td>
+<td><p>Sigmax coupling of current noise</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coupling.current_Dz" title="coupling.current_Dz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_Dz</span></code></a>(dx, z0[, state])</p></td>
+<td><p>Sigmaz coupling of current noise</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#coupling.voltage_Dx" title="coupling.voltage_Dx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">voltage_Dx</span></code></a>(dzB, v, d, eta[, Omw])</p></td>
+<td><p>Sigmax coupling of voltage noise</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coupling.voltage_Dz" title="coupling.voltage_Dz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">voltage_Dz</span></code></a>(dzB, v, d, eta[, Omw, state])</p></td>
+<td><p>Sigmaz coupling of voltage noise</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="py function">
-<dt id="quantumnoise.v_noise_macro">
-<code class="sig-prename descclassname">quantumnoise.</code><code class="sig-name descname">v_noise_macro</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.v_noise_macro" title="Permalink to this definition">¶</a></dt>
+<dt id="coupling.current_Dx">
+<code class="sig-prename descclassname">coupling.</code><code class="sig-name descname">current_Dx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">z0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#coupling.current_Dx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sigmax coupling of current noise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dx</strong> (<em>float</em>) – Distance of the ion from the magnetic gradient nil [m]</p></li>
+<li><p><strong>z0</strong> (<em>float</em>) – distance of the ion from the chip [m]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="coupling.current_Dz">
+<code class="sig-prename descclassname">coupling.</code><code class="sig-name descname">current_Dz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dx</span></em>, <em class="sig-param"><span class="n">z0</span></em>, <em class="sig-param"><span class="n">state</span><span class="o">=</span><span class="default_value">'dressed'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#coupling.current_Dz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sigmaz coupling of current noise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dx</strong> (<em>float</em>) – Distance of the ion from the magnetic gradient nil [m]</p></li>
+<li><p><strong>z0</strong> (<em>float</em>) – distance of the ion from the chip [m]</p></li>
+<li><p><strong>state</strong> (<em>string</em><em>, </em><em>[</em><em>&quot;dressed&quot;</em><em>, </em><em>&quot;clock&quot;</em><em>, </em><em>&quot;bare&quot;</em><em>]</em>) – the qubit’s spin state</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="coupling.voltage_Dx">
+<code class="sig-prename descclassname">coupling.</code><code class="sig-name descname">voltage_Dx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dzB</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">eta</span></em>, <em class="sig-param"><span class="n">Omw</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#coupling.voltage_Dx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sigmax coupling of voltage noise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dzB</strong> (<em>float</em>) – Magnetic field gradient [T/m]</p></li>
+<li><p><strong>v</strong> (<em>float</em>) – secular frequency [Hz]</p></li>
+<li><p><strong>d</strong> (<em>float</em>) – distance to electrodes [m]</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – geometric factor [a.u.]</p></li>
+<li><p><strong>Omw</strong> (<em>float</em>) – dressed state splitting [Hz]</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Omw can be set to 0 when v &gt;&gt; Omw, which is usually the case</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="coupling.voltage_Dz">
+<code class="sig-prename descclassname">coupling.</code><code class="sig-name descname">voltage_Dz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dzB</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">eta</span></em>, <em class="sig-param"><span class="n">Omw</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">state</span><span class="o">=</span><span class="default_value">'dressed'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#coupling.voltage_Dz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sigmaz coupling of voltage noise</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dzB</strong> (<em>float</em>) – Magnetic field gradient [T/m]</p></li>
+<li><p><strong>v</strong> (<em>float</em>) – secular frequency [Hz]</p></li>
+<li><p><strong>d</strong> (<em>float</em>) – distance to electrodes [m]</p></li>
+<li><p><strong>eta</strong> (<em>float</em>) – geometric factor [a.u.]</p></li>
+<li><p><strong>Omw</strong> (<em>float</em>) – dressed state splitting [Hz]</p></li>
+<li><p><strong>state</strong> (<em>string</em><em>, </em><em>[</em><em>&quot;dressed&quot;</em><em>, </em><em>&quot;clock&quot;</em><em>, </em><em>&quot;bare&quot;</em><em>]</em>) – the qubit’s spin state</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Omw can be set to 0 when v &gt;&gt; Omw, which is usually the case</p>
+</dd></dl>
+
+<span class="target" id="module-spectrum"></span><p><strong>Functions</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#spectrum.macro_voltage_spectrum" title="spectrum.macro_voltage_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">macro_voltage_spectrum</span></code></a>(w)</p></td>
+<td><p>Example PSD for voltage noise on the mascroscopic experiment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#spectrum.opamp_spectrum" title="spectrum.opamp_spectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">opamp_spectrum</span></code></a>(en_white, en_flicker)</p></td>
+<td><p>Characteristic op-amp noise spectrum</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="spectrum.macro_voltage_spectrum">
+<code class="sig-prename descclassname">spectrum.</code><code class="sig-name descname">macro_voltage_spectrum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">w</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectrum.macro_voltage_spectrum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Example PSD for voltage noise on the mascroscopic experiment.</p>
-<dl class="py method">
-<dt>
-<code class="sig-name descname">Sj : Thermal noise</code></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt>
-<code class="sig-name descname">Ss : Noise out of the Voltage Generator (HV-40-16)</code></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt>
-<code class="sig-name descname">Filter : Low pass butterworth filter</code></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt>
-<code class="sig-name descname">Gauss : Noise source which was identified at 20 kHz, modeled by a gaussian</code></dt>
-<dd></dd></dl>
-
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>w</strong> (<em>float</em>) – angular frequency</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt id="quantumnoise.voltage_Dx">
-<code class="sig-prename descclassname">quantumnoise.</code><code class="sig-name descname">voltage_Dx</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dzB</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">eta</span></em>, <em class="sig-param"><span class="n">Omw</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.voltage_Dx" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sigmax coupling of voltage noise</p>
+<dt id="spectrum.opamp_spectrum">
+<code class="sig-prename descclassname">spectrum.</code><code class="sig-name descname">opamp_spectrum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">en_white</span></em>, <em class="sig-param"><span class="n">en_flicker</span></em><span class="sig-paren">)</span><a class="headerlink" href="#spectrum.opamp_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Characteristic op-amp noise spectrum</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dzB</strong> (<em>Magnetic field gradient</em>) – </p></li>
-<li><p><strong>v</strong> (<em>secular frequency</em>) – </p></li>
-<li><p><strong>d</strong> (<em>distance to electrodes</em>) – </p></li>
-<li><p><strong>eta</strong> (<em>geometric factor</em>) – </p></li>
-<li><p><strong>Omw</strong> (<em>dressed state splitting</em>) – </p></li>
+<li><p><strong>en_white</strong> (<em>float</em>) – white noise level of PSD</p></li>
+<li><p><strong>en_flicker</strong> (<em>float</em>) – 1/f noise level of PSD</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>Omw can be neglected when v &gt;&gt; Omw, which is usually the case</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="quantumnoise.voltage_Dz">
-<code class="sig-prename descclassname">quantumnoise.</code><code class="sig-name descname">voltage_Dz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dzB</span></em>, <em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">d</span></em>, <em class="sig-param"><span class="n">eta</span></em>, <em class="sig-param"><span class="n">Omw</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">sensitive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#quantumnoise.voltage_Dz" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sigmax coupling of voltage noise</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dzB</strong> (<em>Magnetic field gradient</em>) – </p></li>
-<li><p><strong>v</strong> (<em>secular frequency</em>) – </p></li>
-<li><p><strong>d</strong> (<em>distance to electrodes</em>) – </p></li>
-<li><p><strong>eta</strong> (<em>geometric factor</em>) – </p></li>
-<li><p><strong>Omw</strong> (<em>dressed state splitting</em>) – </p></li>
-<li><p><strong>Sensitive</strong> (<em>True if using magnetic sensitive states</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Omw can be neglected when v &gt;&gt; Omw, which is usually the case</p>
 </dd></dl>
 
 </div>
