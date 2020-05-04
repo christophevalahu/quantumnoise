@@ -108,10 +108,16 @@ def current_Dx(dx, z0) :
     
     z0 : float
         distance of the ion from the chip [m]
+    
+    TO-DO 
+    -----
+    Verify equation for current-magnetic conversion
     '''
     MU_0 =  1.25663706212e-6 #T m/A
     
-    return dx * 9 * MU_0/(8*pi * sqrt(3) * (z0**2))
+    return dx * 1.6826e-5 * (z0)**(-1.78) /10
+    
+    #return dx * 9 * MU_0/(8*pi * sqrt(3) * (z0**2))
     
 def current_Dz(dx, z0, state = "dressed") :
     ''' Sigmaz coupling of current noise
